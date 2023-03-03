@@ -18,7 +18,8 @@ def filter_rules_related_to_target(rules: List, target_column: str):
         rhs = rule.rhs
         if len(rhs) > 1:
             continue
-        column_name, value = rule.rhs[0]
+        column_name, value = rhs[0]
+        column_name = column_name.split('__')[0]
         if column_name == target_column:
             relevant_rules.append(rule)
     return relevant_rules

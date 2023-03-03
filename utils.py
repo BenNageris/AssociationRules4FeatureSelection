@@ -36,5 +36,5 @@ def get_target_column(dataset_name: str):
 
 def load_datasets(dataset_name: str):
     train_df = pd.read_csv(TRAIN_DATASET.format(dataset_name), index_col=get_index_col(dataset_name))
-    test_df = pd.read_csv(TEST_DATASET.format(dataset_name))
+    test_df = pd.read_csv(TEST_DATASET.format(dataset_name), index_col=get_index_col(dataset_name))
     return train_df, test_df

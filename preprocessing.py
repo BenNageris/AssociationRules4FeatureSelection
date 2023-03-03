@@ -1,5 +1,6 @@
 from typing import List
 from dataclasses import dataclass
+from sklearn.preprocessing import LabelEncoder
 
 import pandas as pd
 
@@ -9,6 +10,9 @@ class ColumnsTypes:
     very_numerical: List
     categorical: List
     ordinals: List
+
+    def all(self):
+        return self.very_numerical + self.categorical + self.ordinals
 
 
 def _split_columns_types_to_categories(train_df: pd.DataFrame):
@@ -35,6 +39,18 @@ def _drop_categorical_columns_with_high_na_ratio(train_df: pd.DataFrame, categor
     return train_df.drop(drop_us.index, axis=1), list(set(categorical_columns) - set(drop_us.index))
 
 
+def _replace_na_with_column_most_common_value(train_df: pd.DataFrame, categorical_columns, replace_value: float = 0.07):
+    nul_cols = train_df[categorical_columns].isna().sum() / len(train_df)
+    cols_to_replace = nul_cols[nul_cols < replace_value]
+    cols_to_replace = cols_to_replace[0 < nul_cols]
+    for column in cols_to_replace.index:
+        col = train_df[column]
+        most_common: pd.Series = col.mode()
+        value = most_common.values[0]
+        train_df[column] = train_df[column].fillna(value)
+    return train_df
+
+
 def preprocessing(train_df: pd.DataFrame):
     very_numerical, categorical_columns, ordinals = _split_columns_types_to_categories(train_df)
     train_df = _fill_numerical_na_values_with_column_mean(
@@ -45,6 +61,19 @@ def preprocessing(train_df: pd.DataFrame):
         train_df=train_df,
         categorical_columns=categorical_columns
     )
+
+    train_df = _replace_na_with_column_most_common_value(
+        train_df=train_df,
+        categorical_columns=categorical_columns
+    )
     train_df[categorical_columns] = train_df[categorical_columns].fillna('na')
 
     return train_df, ColumnsTypes(very_numerical=very_numerical, categorical=categorical_columns, ordinals=ordinals)
+
+
+def label_encode_columns(df: pd.DataFrame, columns_to_encode: List):
+    label_encoder = LabelEncoder()
+    for cat_col in df.columns:
+        if cat_col in columns_to_encode or len(columns_to_encode) == 0:
+            df[cat_col] = label_encoder.fit_transform(df[cat_col])
+    return df
