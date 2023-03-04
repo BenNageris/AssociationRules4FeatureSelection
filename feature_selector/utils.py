@@ -1,7 +1,7 @@
 import pandas as pd
 
-from datasets_config import datasets_config
-from consts import TRAIN_DATASET, TEST_DATASET
+from feature_selector.datasets_config import datasets_config
+from feature_selector.consts import TRAIN_DATASET, TEST_DATASET
 
 
 def _is_dataset_conf_exists(dataset_name: str):

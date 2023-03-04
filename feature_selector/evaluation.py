@@ -1,9 +1,10 @@
 from typing import List
-import pandas as pd
 from sklearn import tree
 
-from one_hot_column import transform_one_hot_column
-from preprocessing import label_encode_columns
+import pandas as pd
+
+from feature_selector.one_hot_column import transform_one_hot_column
+from feature_selector.preprocessing import label_encode_columns
 
 
 def create_decision_tree_model():

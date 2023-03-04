@@ -1,28 +1,22 @@
-import pandas as pd
-import math
 from typing import List
-
-import preprocessing
-
-from utils import load_datasets, get_min_support, get_min_confidence, get_target_column
-from bin_columns import bin_numeric_columns
-from one_hot_column import transform_one_hot_column
-from association_rules import calc_apriori_rules, filter_rules_related_to_target
-from feature_selection import feature_rank
-from evaluation import pre_process_df, preprocess_columns, split_to_features_and_target
-from correlation import chi_squared, pearson, get_sorted_chi_squared_parameters
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
-from evaluation import evaluate_prediction
 from sklearn import tree
-from sklearn.ensemble import RandomForestClassifier
+
+from feature_selector import preprocessing
+from feature_selector.feature_selection import feature_rank
+from feature_selector.evaluation import evaluate_prediction
+from feature_selector.bin_columns import bin_numeric_columns
+from feature_selector.one_hot_column import transform_one_hot_column
+from feature_selector.correlation import get_sorted_chi_squared_parameters
+from feature_selector.association_rules import calc_apriori_rules, filter_rules_related_to_target
+from feature_selector.evaluation import pre_process_df, preprocess_columns, split_to_features_and_target
+from feature_selector.utils import load_datasets, get_min_support, get_min_confidence, get_target_column
+
 
 if __name__ == "__main__":
-    dataset_name = "mobilePriceRange"
+    # dataset_name = "mobilePriceRange"
     # dataset_name = "HomeLoanApproval"
     # dataset_name = "airlinesDelay"
-    # dataset_name = "mushroom"
-    # dataset_name = "heartAttack"
+    dataset_name = "heartAttack"
 
     train_df, test_df = load_datasets(dataset_name=dataset_name)
     train_df = train_df.dropna()
@@ -61,7 +55,7 @@ if __name__ == "__main__":
     # parameters = ["Flight", "Time", "Length", "Airline", "AirportFrom", "AirportTo"]
     # parameters = ["Credit_History","Property_Area","Loan_Amount_Term","Married","Education","Gender","LoanAmount","Dependents","Unnamed: 0","ApplicantIncome","Self_Employed","CoapplicantIncome"]
     # parameters = ["thall", "cp", "caa", "exng", "slp", "sex", "restecg", "oldpeak", "chol", "age", "thalachh", "trtbps","fbs"]
-    index = 6
+    index = 8
 
     selected_features = parameters[:index]
     total_features = selected_features.copy()

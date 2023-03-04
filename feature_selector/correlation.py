@@ -1,5 +1,6 @@
-import pandas as pd
 from scipy import stats
+
+import pandas as pd
 
 
 def chi_squared(df: pd.DataFrame, categorical_columns: list, target_column: str):

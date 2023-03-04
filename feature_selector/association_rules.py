@@ -1,4 +1,5 @@
 from typing import List
+
 import pandas as pd
 
 from efficient_apriori import apriori
