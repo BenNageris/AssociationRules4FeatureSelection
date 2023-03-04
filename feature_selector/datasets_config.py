@@ -27,8 +27,8 @@ heart_attack = {
 }
 
 datasets_config = {
-    "mobilePriceRange": mobile_price_config,
+    "MobilePriceRange": mobile_price_config,
     "HomeLoanApproval": home_loan_config,
-    "airlinesDelay": airlines_delay,
-    "heartAttack": heart_attack,
+    "AirlinesDelay": airlines_delay,
+    "HeartAttack": heart_attack,
 }
