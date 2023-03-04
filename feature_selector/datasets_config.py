@@ -26,17 +26,9 @@ heart_attack = {
     "min_support": 0.3,
 }
 
-mushroom = {
-    "index_col": "id",
-    "target_column": "class",
-    "min_confidence": 0.5,
-    "min_support": 0.4,
-}
-
 datasets_config = {
     "mobilePriceRange": mobile_price_config,
     "HomeLoanApproval": home_loan_config,
     "airlinesDelay": airlines_delay,
     "heartAttack": heart_attack,
-    "mushroom": mushroom,
 }

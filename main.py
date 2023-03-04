@@ -19,8 +19,8 @@ if __name__ == "__main__":
     dataset_name = "heartAttack"
 
     train_df, test_df = load_datasets(dataset_name=dataset_name)
-    train_df = train_df.dropna()
-    
+    train_df = pre_process_df(train_df)
+
     train_df, columns_types = preprocessing.preprocessing(train_df)
 
     target_column = get_target_column(dataset_name=dataset_name)
