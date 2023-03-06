@@ -16,6 +16,10 @@ class ColumnsTypes:
 
 
 def _split_columns_types_to_categories(train_df: pd.DataFrame):
+    """
+    :param train_df: pandas Dataframe
+    :return: return a tuple of columns in each type: (very numerical, categorical , ordinals)
+    """
     numeric_columns = train_df.dtypes[(train_df.dtypes == "float64") | (train_df.dtypes == "int64")].index.tolist()
     very_numerical = [nc for nc in numeric_columns if train_df[nc].nunique() > 20]
     categorical_columns = [c for c in train_df.columns if c not in numeric_columns]
@@ -24,6 +28,11 @@ def _split_columns_types_to_categories(train_df: pd.DataFrame):
 
 
 def _fill_numerical_na_values_with_column_mean(train_df: pd.DataFrame, numerical_columns):
+    """
+    :param train_df: pandas Dataframe
+    :param numerical_columns: List of numerical columns
+    :return: Fills in the nulls with the average value of the numerical columns
+    """
     na_columns = train_df[numerical_columns].isna().sum()
     na_columns = na_columns[na_columns > 0]
     for nc in na_columns.index:
@@ -32,6 +41,12 @@ def _fill_numerical_na_values_with_column_mean(train_df: pd.DataFrame, numerical
 
 
 def _drop_categorical_columns_with_high_na_ratio(train_df: pd.DataFrame, categorical_columns, na_ratio: float = 0.7):
+    """
+    :param train_df: pandas Dataframe
+    :param categorical_columns: List
+    :param na_ratio: float
+    :return: drops the columns with have at least na_ratio of nuls
+    """
     nul_cols = train_df[categorical_columns].isna().sum() / len(train_df)
     drop_us = nul_cols[nul_cols > na_ratio]
     if len(drop_us.index) > 0:
@@ -40,6 +55,13 @@ def _drop_categorical_columns_with_high_na_ratio(train_df: pd.DataFrame, categor
 
 
 def _replace_na_with_column_most_common_value(train_df: pd.DataFrame, categorical_columns, replace_value: float = 0.07):
+    """
+    :param train_df: pandas Dataframe
+    :param categorical_columns: List
+    :param replace_value: float
+    :return: replace nulls with the most common value in column where the share of nuls is less
+    than replace value in that column
+    """
     nul_cols = train_df[categorical_columns].isna().sum() / len(train_df)
     cols_to_replace = nul_cols[nul_cols < replace_value]
     cols_to_replace = cols_to_replace[0 < nul_cols]
@@ -52,6 +74,12 @@ def _replace_na_with_column_most_common_value(train_df: pd.DataFrame, categorica
 
 
 def preprocessing(train_df: pd.DataFrame):
+    """
+    automates the all preprocessing stage
+    :param train_df: pandas Dataframe
+    :return: returns the dataframe after all preprocessing - filling with average value, drop high columns with
+    high nulls percentage and with the common value
+    """
     very_numerical, categorical_columns, ordinals = _split_columns_types_to_categories(train_df)
     train_df = _fill_numerical_na_values_with_column_mean(
         train_df=train_df,
@@ -72,6 +100,11 @@ def preprocessing(train_df: pd.DataFrame):
 
 
 def label_encode_columns(df: pd.DataFrame, columns_to_encode: List):
+    """
+    :param df: pandas Dataframe
+    :param columns_to_encode: List
+    :return: returns the dataframe with label encoding for each column in columns_to_encode
+    """
     label_encoder = LabelEncoder()
     for cat_col in df.columns:
         if cat_col in columns_to_encode or len(columns_to_encode) == 0:

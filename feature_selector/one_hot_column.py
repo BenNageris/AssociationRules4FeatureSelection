@@ -3,6 +3,12 @@ import pandas as pd
 
 
 def transform_one_hot_column(df: pd.DataFrame, columns: List, to_remove_one_hot_col=True):
+    """
+    :param df: pandas Dataframe
+    :param columns: List
+    :param to_remove_one_hot_col: bool
+    :return: Executes one-hot-encoding to the columns
+    """
     for column in columns:
         if df[column].value_counts().size <= 3:
             one_hot_cols: pd.DataFrame = pd.get_dummies(df[column], prefix=f"{column}_")
