@@ -13,10 +13,10 @@ from feature_selector.utils import load_datasets, get_min_support, get_min_confi
 
 
 if __name__ == "__main__":
-    # dataset_name = "mobilePriceRange"
+    # dataset_name = "MobilePriceRange"
     # dataset_name = "HomeLoanApproval"
-    # dataset_name = "airlinesDelay"
-    dataset_name = "heartAttack"
+    # dataset_name = "AirlinesDelay"
+    dataset_name = "HeartAttack"
 
     train_df, test_df = load_datasets(dataset_name=dataset_name)
     train_df = pre_process_df(train_df)
